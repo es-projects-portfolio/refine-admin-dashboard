@@ -13,7 +13,7 @@ import routerProvider, {
 import { App as AntdApp, ConfigProvider } from "antd";
 
 import Layout from "./components/layout";
-// import { resources } from "config/resources";
+import { resources } from "./config/resources";
 import { authProvider, dataProvider, liveProvider } from "./providers";
 import { Home, Register, Login, ForgotPassword } from './pages';
 // import {
@@ -41,7 +41,7 @@ const App = () => {
               liveProvider={liveProvider}
               notificationProvider={useNotificationProvider}
               authProvider={authProvider}
-              // resources={resources}
+              resources={resources}
               options={{
                 syncWithLocation: true,
                 warnWhenUnsavedChanges: true,
