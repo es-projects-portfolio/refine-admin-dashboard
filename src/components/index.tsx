@@ -6,6 +6,7 @@ import ProjectCardSkeleton from './skeleton/project-card';
 import LatestActivitiesSkeleton from './skeleton/latest-activities';
 import AccordionHeaderSkeleton from './skeleton/accordion-header';
 import DashboardTotalCountCard from './home/total-count-card';
+import LatestActivities from './home/latest-activities';
 
 
 export {
@@ -16,7 +17,8 @@ export {
     ProjectCardSkeleton,
     LatestActivitiesSkeleton,
     AccordionHeaderSkeleton,
-    DashboardTotalCountCard
+    DashboardTotalCountCard,
+    LatestActivities
  };
 
 
