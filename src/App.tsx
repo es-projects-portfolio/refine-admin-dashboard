@@ -28,6 +28,7 @@ import { Home, Register, Login, ForgotPassword, CompanyList } from './pages';
 // } from "@/routes";
 
 import "@refinedev/antd/dist/reset.css";
+import Create from "./pages/company/create";
 
 const App = () => {
   return (
@@ -66,9 +67,10 @@ const App = () => {
                   }
                 >
                   <Route index element={<Home />} />
-                  <Route path="/companies" element={
-                    <CompanyList />
-                  } />
+                  <Route path="/companies">
+                    <Route index element={<CompanyList />} />
+                    <Route path="new" element={<Create />} />
+                  </Route>
                 </Route>
               </Routes>
               <UnsavedChangesNotifier />
