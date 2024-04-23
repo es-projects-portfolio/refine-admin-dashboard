@@ -20,6 +20,7 @@ import { Home, Register, Login, ForgotPassword, CompanyList } from './pages';
 import "@refinedev/antd/dist/reset.css";
 import Create from "./pages/company/create";
 import EditCompany from "./pages/company/edit";
+import TaskList from "./pages/tasks/list";
 
 const App = () => {
   return (
@@ -62,6 +63,9 @@ const App = () => {
                     <Route index element={<CompanyList />} />
                     <Route path="new" element={<Create />} />
                     <Route path="edit/:id" element={<EditCompany />} />
+                  </Route>
+                  <Route path="/tasks">
+                    <Route index element={<TaskList />} />
                   </Route>
                 </Route>
               </Routes>
