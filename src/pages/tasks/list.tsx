@@ -12,8 +12,9 @@ import { UPDATE_TASK_STAGE_MUTATION } from "../../graphql/mutations";
 import { KanbanBoard, KanbanBoardContainer } from "../../components/tasks/kanban/board";
 import KanbanColumn from "../../components/tasks/kanban/column";
 import KanbanItem from "../../components/tasks/kanban/item";
-import { ProjectCardSkeleton } from "../../components";
-import ProjectCard from "../../components/tasks/kanban/card";
+import { KanbanColumnSkeleton, ProjectCardSkeleton } from "../../components";
+import ProjectCard, { ProjectCardMemo } from "../../components/tasks/kanban/card";
+import { KanbanAddCardButton } from "../../components/tasks/kanban/add-card-button";
 
 
 
@@ -63,6 +64,8 @@ const TaskList = ({ children }: React.PropsWithChildren) => {
       gqlQuery: TASKS_QUERY,
     },
   });
+
+  const { mutate: updateask } = useUpdate();
 
   // group tasks by stage
   // it's convert Task[] to TaskStage[] (group by stage) for kanban
@@ -126,6 +129,7 @@ const TaskList = ({ children }: React.PropsWithChildren) => {
     replace(path);
   };
 
+
   const isLoading = isLoadingTasks || isLoadingStages;
 
   if (isLoading) return <PageSkeleton />;
@@ -133,7 +137,7 @@ const TaskList = ({ children }: React.PropsWithChildren) => {
   return (
     <>
       <KanbanBoardContainer>
-        <KanbanBoard >
+        <KanbanBoard onDragEnd={handleOnDragEnd}>
           <KanbanColumn
             id={"unassigned"}
             title={"unassigned"}
@@ -147,7 +151,7 @@ const TaskList = ({ children }: React.PropsWithChildren) => {
                   id={task.id}
                   data={{ ...task, stageId: "unassigned" }}
                 >
-                  <ProjectCard 
+                  <ProjectCardMemo 
                     {...task}
                     dueDate={task.dueDate || undefined}
                   />
@@ -155,7 +159,13 @@ const TaskList = ({ children }: React.PropsWithChildren) => {
               );
             })}
             
+            {!taskStages.unassignedStage.length && (
+                <KanbanAddCardButton 
+                    onClick={() => handleAddCard({ stageId: 'unassigned' })}
+                />
+            )}
           </KanbanColumn>
+
           {taskStages.columns?.map((column) => {
             return (
               <KanbanColumn
@@ -170,11 +180,18 @@ const TaskList = ({ children }: React.PropsWithChildren) => {
                   column.tasks.map((task) => {
                     return (
                       <KanbanItem key={task.id} id={task.id} data={task}>
-                        
+                        <ProjectCardMemo 
+                            {...task}
+                            dueDate={task.dueDate || undefined}
+                        />
                       </KanbanItem>
                     );
                   })}
-
+                {!column.tasks.length && (
+                    <KanbanAddCardButton
+                        onClick={() => handleAddCard({ stageId: column.id })}
+                    />
+                )}
               </KanbanColumn>
             );
           })}
@@ -191,7 +208,13 @@ const PageSkeleton = () => {
 
   return (
     <KanbanBoardContainer>
-      
+        {Array.from({ length: columnCount }, (_, index) => (
+            <KanbanColumnSkeleton key={index}>
+            {Array.from({ length: itemCount }, (_, index) => (
+                <ProjectCardSkeleton key={index} />
+            ))}
+            </KanbanColumnSkeleton>
+        ))}
     </KanbanBoardContainer>
   );
 };
